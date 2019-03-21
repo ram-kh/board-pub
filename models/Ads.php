@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\User;
 
 /**
  * This is the model class for table "ads".
@@ -29,6 +30,11 @@ class Ads extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'ads';
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**
@@ -67,7 +73,7 @@ class Ads extends \yii\db\ActiveRecord
        $monthes = [
            1=>'Января', 2=>'Февраля', 3=>'Марта', 4=>'Апреля', 5=>'Мая', 6=>'Июня',7=>'Июля',8=>'Августа', 9=>'Сентября', 10=>'Октября', 11=>'Ноября', 12=>'Декабря'
        ];
-        $this->date = date('j ', $this->date).$monthes[date('n', $this->date)].date(', Y', $this->date);
+        $this->date = date('j ', $this->date).$monthes[date('n', $this->date)].date(', Y, ', $this->date). date('H:i', $this->date);
 
         $this->link = Yii::$app->urlManager->createUrl(["ads/view", "id" =>$this->id]);
     }

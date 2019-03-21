@@ -52,15 +52,15 @@ class Users extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'username' => 'Username',
-            'phone' => 'Phone',
-            'fullname' => 'Fullname',
+            'username' => 'Логин пользователя',
+            'phone' => 'Телефон',
+            'fullname' => 'Полное имя',
             'salt' => 'Salt',
-            'password' => 'Password',
+            'password' => 'Пароль',
             'email' => 'Email',
-            'status' => 'Status',
-            'regdate' => 'Regdate',
-            'lastlogon' => 'Lastlogon',
+            'status' => 'Статус',
+            'regdate' => 'Дата регистрации',
+            'lastlogon' => 'Дата последнего входа',
         ];
     }
 }

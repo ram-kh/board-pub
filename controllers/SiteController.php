@@ -7,8 +7,12 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
+use app\models\User;
 use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\SignupForm;
+use app\models\PasswordResetRequestForm;
+use app\models\ResetPasswordForm;
+
 
 class SiteController extends Controller
 {
@@ -77,6 +81,13 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            $user = User::find()->where(['id' => Yii::$app->user->id])->one();
+            if (!empty($user)) {
+                $user->last_login = time();
+                $user->save();
+            }
+
+
             return $this->goBack();
         }
 
@@ -102,5 +113,91 @@ class SiteController extends Controller
      * Displays contact page.
      *
      * @return Response|string
+     *
      */
+
+    /*
+    public function actionAddAdmin() {
+        $model = User::find()->where(['username' => 'admin'])->one();
+        if (empty($model)) {
+            $user = new User();
+            $user->username = 'admin';
+            $user->email = 'ram_kh@mail.ru';
+            $user->setPassword('admin');
+            $user->generateAuthKey();
+            $user->fullname = 'Ramil Khuzin';
+            $user->phone = '+79028667790';
+            $user->last_login = time();
+            if ($user->save()) {
+                echo 'Хорошо, пользователь admin добавлен';
+            }
+        }
+    }
+
+    */
+
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->goHome();
+                }
+            }
+        }
+
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Requests password reset.
+     *
+     * @return mixed
+     */
+    public function actionRequestPasswordReset()
+    {
+        $model = new PasswordResetRequestForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+                Yii::$app->session->setFlash('success', 'Проверьте свой email для дальнейших инструкций.');
+                return $this->goHome();
+            } else {
+                Yii::$app->session->setFlash('error', 'Извените, мы не можем сбросить пароль с помощью email.');
+            }
+        }
+
+        return $this->render('passwordResetRequestForm', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Resets password.
+     *
+     * @param string $token
+     * @return mixed
+     * @throws BadRequestHttpException
+     */
+    public function actionResetPassword($token)
+    {
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            Yii::$app->session->setFlash('success', 'Новый пароль установлен.');
+            return $this->goHome();
+        }
+
+        return $this->render('resetPasswordForm', [
+            'model' => $model,
+            ]);
+      }
 }

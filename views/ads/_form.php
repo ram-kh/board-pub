@@ -2,19 +2,11 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Ads */
 /* @var $form yii\widgets\ActiveForm */
 
- $now = new DateTime();
- $now = $now->format('Y-m-d H:i:s');
-
-if ($create) {
-    $model->date = $now;
-
-}
 
 ?>
 
@@ -32,8 +24,9 @@ if ($create) {
 
     <?= $form->field($model, 'sum')->textInput() ?>
 
-    <?= $form->field($model, 'user_id')->hiddenInput()->label('Автор: '.\app\models\Users::findOne($model->user_id)->fullname) ?>
+    <?= $form->field($model, 'user_id')->hiddenInput()->label('Автор: '.\app\models\User::findOne($model->user_id)->fullname) ?>
 
+    <?php $model->date = time();?>
     <?= $form->field($model,'date')->hiddenInput()->label(false) ?>
 
 </div>
@@ -44,4 +37,4 @@ if ($create) {
 
     <?php ActiveForm::end(); ?>
 
-</div>
+

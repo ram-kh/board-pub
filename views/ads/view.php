@@ -16,25 +16,31 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Вы уверены что хотите удалить это объявление?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php if (Yii::$app->user->id == $model->user_id)   { ?>
+            <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Вы уверены что хотите удалить это объявление?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php    } ?>
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+     //       'id',
             'title',
             'intro_text',
             'full_text',
             'hits',
-            'user_id',
+            [
+                    'label' => 'Автор:',
+                    'value' => $model->user->fullname,
+            ],
+     //       'user_id',
             'sum',
             'date',
         ],

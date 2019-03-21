@@ -4,12 +4,12 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Ads;
-use app\models\AdsSearch;
+use app\models\User;
 use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\bootstrap\DatePicker;
+
 
 /**
  * AdsController implements the CRUD actions for Ads model.
@@ -40,7 +40,7 @@ class AdsController extends Controller
       //  $searchModel = new AdsSearch();
       //  $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $query = Ads::find();
+        $query = Ads::find()->with('user');
         $pagination = new Pagination([
             'defaultPageSize'=> 5,
             'totalCount' => $query->count()
@@ -137,6 +137,6 @@ class AdsController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('Запрошенная страница не найдена. / The requested page does not exist.');
     }
 }
