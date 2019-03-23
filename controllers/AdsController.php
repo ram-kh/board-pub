@@ -82,11 +82,12 @@ class AdsController extends Controller
         $model = new Ads();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->adid]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'create' => true,
         ]);
     }
 
@@ -100,6 +101,9 @@ class AdsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        if (Yii::$app->user->id !== $model->user_id)   {
+            return $this->redirect(['view', 'id' => $model->id]);
+        };
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -107,6 +111,7 @@ class AdsController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'create' => false,
         ]);
     }
 
@@ -119,7 +124,15 @@ class AdsController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        if (Yii::$app->user->id !== $model->user_id)   {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+        else {
+            $model->delete();
+        } ;
+
+
 
         return $this->redirect(['index']);
     }

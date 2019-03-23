@@ -18,21 +18,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
-        <?= Html::a('Добавить объявление', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php if(!Yii::$app->user->isGuest) { echo Html::a('Добавить объявление', ['create'], ['class' => 'btn btn-success']); } ; ?>
     </p>
 
     <p>
-    <ul>
+
         <?php foreach ($ads as $ad){ ?>
 
         <div  class="ad">
+            <hr>
+                <h4><?= Html::a('Объявление №'.$ad->number, ['ads/view', 'id' => $ad->id]);?><?='. '.$ad->title;?></h4>
 
-                <h4>Объявление №<?=$ad->number?>. <?=$ad->title?></h4>
-                <hr />
                 <table class="ad_info">
                     <tr>
                         <td>
-                            <p>Автор: <?= app\models\Users::findone($ad->user_id)->fullname?> &nbsp;&nbsp;&nbsp;</p>
+                            <p>Автор: <?= app\models\User::findone($ad->user_id)->fullname?> &nbsp;&nbsp;&nbsp;</p>
                         </td>
                         <td>
                             <p><?=$ad->date?></p>
@@ -50,13 +50,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <p><a href="<?=$ad->link?>">Читать полностью</a></p>
         </div>
         <?php }?>
-    </ul>
+
     </p>
 
     <br />
     <hr />
-    <div id="pages">
-
+    <div>
         <?= LinkPager::widget([
                 'pagination' => $pagination,
                 'firstPageLabel' => 'В начало',
