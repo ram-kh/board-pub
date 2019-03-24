@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 use yii\widgets\LinkPager;
 
 /* @var $this yii\web\View */
@@ -32,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <table class="ad_info">
                     <tr>
                         <td>
-                            <p>Автор: <?= app\models\User::findone($ad->user_id)->fullname?> &nbsp;&nbsp;&nbsp;</p>
+                            <p>Автор: <?= $ad->user->fullname ?> &nbsp;&nbsp;&nbsp;</p>
                         </td>
                         <td>
                             <p><?=$ad->date?></p>

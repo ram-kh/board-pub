@@ -46,6 +46,14 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Вход', 'url' => ['/site/login']];
     } else {
         $menuItems[] = '<li>'
+            . Html::beginForm(['/ads/index-user'], 'post')
+            . Html::submitButton(
+                'Мои объявления' , // (' . Yii::$app->user->identity->username . ')',
+                ['class' => 'btn btn-link logout']
+            )
+            . Html::endForm()
+            . '</li>';
+        $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
                 'Выход (' . Yii::$app->user->identity->username . ')',
@@ -53,6 +61,7 @@ AppAsset::register($this);
             )
             . Html::endForm()
             . '</li>';
+
     }
 
     echo Nav::widget([

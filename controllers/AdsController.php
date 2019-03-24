@@ -59,6 +59,29 @@ class AdsController extends Controller
         ]);
     }
 
+    public function actionIndexUser()
+    {
+        //  $searchModel = new AdsSearch();
+        //  $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $query = Ads::find()->where(['user_id' => Yii::$app->user->id]);
+        $pagination = new Pagination([
+            'defaultPageSize'=> 5,
+            'totalCount' => $query->count()
+        ]);
+
+
+        $ads = $query->orderBy(['date' => SORT_DESC])->offset($pagination->offset)->limit($pagination->limit)->all();
+
+        Ads::setNumbers($ads);
+
+        return $this->render('index', [
+            'ads' => $ads,
+            'active_page' => Yii::$app->request->get("page", 1),
+            'count_pages'=>$pagination->getPageCount(),
+            'pagination' => $pagination,
+        ]);
+    }
     /**
      * Displays a single Ads model.
      * @param string $id
@@ -67,8 +90,11 @@ class AdsController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $model->hits = $model->hits +1;
+        $model->save(false, ['hits']);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
