@@ -4,8 +4,6 @@ use yii\helpers\Html;
 use yii\widgets\LinkPager;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\AdsSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Объявления';
 $this->params['breadcrumbs'][] = $this->title;
@@ -34,10 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             <p>Автор: <?= $ad->user->fullname ?> &nbsp;&nbsp;&nbsp;</p>
                         </td>
                         <td>
-                            <p><?=$ad->date?></p>
+                            <p>Дата: <?=$ad->date?></p>
                         </td>
                         <td class = "center">
-                            <p> &nbsp;&nbsp;&nbsp;  <?=$ad->hits?>   </p>
+                            <p> &nbsp; Кол-во просмотров: <?=$ad->hits?>   </p>
 
                         </td>
                     </tr>

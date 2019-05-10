@@ -90,4 +90,30 @@ class Ads extends \yii\db\ActiveRecord
         }
 
     }
+
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        if($this->user_id != Yii::$app->user->id) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        if($this->user_id != Yii::$app->user->id) {
+            return false;
+        }
+
+        return true;
+    }
 }

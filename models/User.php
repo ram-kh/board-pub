@@ -211,4 +211,14 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'last_login' => 'Последний вход',
         ];
     }
+
+    public function getFullname()
+    {
+        return ($this->fullname) ? $this->fullname : $this->getId();
+    }
+
+    public function getAdsCount()
+    {
+        return $this->getAds()->count();
+    }
 }

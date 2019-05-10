@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Ads;
-use app\models\User;
 use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -37,8 +36,6 @@ class AdsController extends Controller
      */
     public function actionIndex()
     {
-      //  $searchModel = new AdsSearch();
-      //  $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $query = Ads::find()->with('user');
         $pagination = new Pagination([
@@ -61,9 +58,6 @@ class AdsController extends Controller
 
     public function actionIndexUser()
     {
-        //  $searchModel = new AdsSearch();
-        //  $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         $query = Ads::find()->where(['user_id' => Yii::$app->user->id]);
         $pagination = new Pagination([
             'defaultPageSize'=> 5,
@@ -144,6 +138,7 @@ class AdsController extends Controller
     /**
      * Deletes an existing Ads model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Если ID пользователя не совпадает с USER_ID объявления, то браузер перенаправляется на просмотр объявления
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -157,8 +152,6 @@ class AdsController extends Controller
         else {
             $model->delete();
         } ;
-
-
 
         return $this->redirect(['index']);
     }
