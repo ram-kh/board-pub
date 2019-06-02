@@ -13,17 +13,18 @@ modules:
       - Yii2
       - PhpBrowser
       - REST
+      - Db
     config:
           Db:
             dsn: 'mysql:host=localhost;dbname=board_test'
             user: 'root'
             password: 'Njvf+1974'
           PhpBrowser:
-            url: http://api.megaflowers.ru.local/index-test.php/
+            url: http://localhost/board/web/index-test.php
             curl:
               CURLOPT_TIMEOUT: 180
           REST:
             depends: PhpBrowser
-            url: 'http://api.megaflowers.ru.local/index-test.php/'
+            url: 'http://localhost/board/web/index-test.php'
             part: Json
 
