@@ -66,54 +66,5 @@ class DeleteAdsCest
         $I->cantSee('Удалить');
     }
 
-    public function tryToEditAndSaveOwnAd(FunctionalTester $I)
-    {
-        $I->wantTo('Check what User can edit and save ad');
-        $I->amLoggedInAs($this->user1);
-        $title = 'Измененный Заголовок 6';
-        $intro_text = 'Это краткий текст измененного объявления 66';
-        $full_text = 'Это полный текст измененного объявления номер 666.';
-        $sum = '60009';
-
-        $I->wantTo('ensure that update ad works');
-        $I->amOnPage('/');
-        $I->click('Вход');
-        $I->canSee('Логин');
-        $I->fillField('Логин','ram_test');
-        $I->fillField('Пароль','Njvf+1974');
-        $I->click('login-button' );
-        $I->see('Выход (ram_test)');
-        $I->seeResponseCodeIs(200);
-        $I->click('Объявление №6');
-        $I->canSee('Заголовок 6');
-        $I->click('Редактировать');
-//        $I->seeResponseCodeIs(202);
-/*        $I->fillField( ['Ads[title]'],  $title);
-        $I->fillField('Ads[intro_text]', $intro_text);
-        $I->fillField('Ads[full_text]', $full_text);
-        $I->fillField('Ads[sum]', $sum);
-//        $I->seeResponseCodeIs(202);
-        $I->click( 'button');
-*/      $I->seeResponseCodeIs(200);
-
-        $I->sendAjaxPostRequest('?r=ads/update&id=6', //. $this->ads6->id,
-            [
-                'title' => $title,
-                'intro_text' => $intro_text,
-                'full_text' => $full_text,
-                'sum' => $sum
-            ]
-        );
-
-      $I->seeResponseCodeIs(200);
-
-      $I->seeInDatabase( 'ads', [
-            'title' => $title,
-            'intro_text' => $intro_text,
-            'full_text' => $full_text,
-            'sum' => $sum
-        ]);
-
-   }
 
 }
