@@ -58,7 +58,7 @@ class DeleteAdsCest
         $I->click('Вход');
         $I->canSee('Логин');
         $I->fillField('Логин','ram_test');
-        $I->fillField('Пароль','Njvf+1974');
+        $I->fillField('Пароль','******');
         $I->click('login-button' );
         $I->see('Выход (ram_test)');
         $I->click('Объявление №5');
